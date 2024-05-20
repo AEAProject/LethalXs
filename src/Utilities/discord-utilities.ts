@@ -28,7 +28,7 @@ class DiscordUtilities {
     return this.commands;
   }
 
-  private async loadCommands(): Promise<void> {
+  public async loadCommands(): Promise<void> {
     const commandsArray = [];
 
     const commandsFolder = fs.readdirSync("./dist/src/discord/Commands");
@@ -45,7 +45,7 @@ class DiscordUtilities {
     this.client?.application?.commands.set(commandsArray);
   }
 
-  private async loadEvents(): Promise<void> {
+  public async loadEvents(): Promise<void> {
     const events: string[] = [];
 
     const folders = fs.readdirSync("./dist/src/discord/Events");

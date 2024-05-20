@@ -4,13 +4,21 @@ import discordUtilities from "../../../Utilities/discord-utilities.js";
 export default {
   name: "interactionCreate",
   async execute(interaction: CommandInteraction, client: Client) {
-    commandHandler(interaction, client);
+    await commandHandler(interaction, client);
   }
 };
 
-function commandHandler(interaction: CommandInteraction, client: Client) {
+async function commandHandler(interaction: CommandInteraction, client: Client) {
   if (interaction.isChatInputCommand()) {
     discordUtilities.logTriggeredCommand(interaction.commandName);
-    discordUtilities.getCommands()[interaction.commandName](interaction, client);
+    let response;
+
+    try {
+      response = await discordUtilities.getCommands()[interaction.commandName](interaction, client);
+    } catch (err) {
+      response = { content: `Internal error occurred while running "${interaction.commandName}.`, ephemeral: true };
+    } finally {
+      interaction.reply(response);
+    }
   }
 }
